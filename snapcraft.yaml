@@ -61,7 +61,6 @@ parts:
       - libssl-dev
       - libxml2-dev
       - libxslt1-dev
-      - libvirt-dev
       - pkg-config
       - gcc
   templates:
