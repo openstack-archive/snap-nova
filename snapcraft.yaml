@@ -1,0 +1,83 @@
+name: nova
+version: ocata
+summary: OpenStack Compute Service (nova)
+description: |
+  OpenStack Nova provides a cloud computing fabric controller,
+  supporting a wide variety of compute technologies, including
+  .
+    libvirt (KVM, Xen, LXC and more),
+    LXD
+    Hyper-V
+    VMware
+    XenServer
+    OpenStack Ironic.
+  .
+  This snap provides the Nova controller component of an OpenStack
+  deployment.
+confinement: strict
+grade: devel
+
+apps:
+  api:
+    command: snap-openstack nova-api-os-compute
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+  conductor:
+    command: snap-openstack nova-conductor
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+  scheduler:
+    command: snap-openstack nova-scheduler
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+  consoleauth:
+    command: snap-openstack nova-consoleauth
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+  manage:
+    command: snap-openstack nova-manage
+    plugs:
+      - network
+parts:
+  nova:
+    plugin: python
+    python-version: python2
+    source: http://tarballs.openstack.org/nova/nova-master.tar.gz
+    python-packages:
+      - pymysql
+      - git+https://github.com/openstack-snaps/snap.openstack#egg=snap.openstack
+    constraints: https://raw.githubusercontent.com/openstack/requirements/master/upper-constraints.txt
+    build-packages:
+      - libffi-dev
+      - libssl-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - libvirt-dev
+      - pkg-config
+      - gcc
+  templates:
+    after:
+      - nova
+    plugin: dump
+    source: conf
+  config:
+    after:
+      - nova
+    plugin: dump
+    source: http://tarballs.openstack.org/nova/nova-master.tar.gz
+    filesets:
+      etc:
+        - etc/nova/*.conf
+        - etc/nova/*.ini
+        - etc/nova/*.json
+        - etc/nova/rootwrap.d
+    stage: [$etc]
+    snap: [$etc]
