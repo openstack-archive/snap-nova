@@ -24,6 +24,12 @@ apps:
     plugs:
       - network
       - network-bind
+  metadata:
+    command: snap-openstack nova-api-metadata
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
   conductor:
     command: snap-openstack nova-conductor
     daemon: simple
@@ -67,7 +73,7 @@ parts:
     after:
       - nova
     plugin: dump
-    source: conf
+    source: snap
   config:
     after:
       - nova
