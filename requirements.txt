@@ -1,0 +1,5 @@
+# Requirements to build snap
+git+https://github.com/openstack-snaps/snapcraft@fixup-install-requires#egg_name=snapcraft
+# PyPi less dependencies
+https://launchpad.net/ubuntu/+archive/primary/+files/python-apt_1.1.0~beta1build1.tar.xz
+https://launchpad.net/python-distutils-extra/trunk/2.39/+download/python-distutils-extra-2.39.tar.gz
