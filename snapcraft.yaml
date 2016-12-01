@@ -30,6 +30,7 @@ apps:
     plugs:
       - network
       - network-bind
+      - firewall-control
   conductor:
     command: snap-openstack nova-conductor
     daemon: simple
