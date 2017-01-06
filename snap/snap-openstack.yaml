@@ -16,14 +16,6 @@ entry_points:
     config-dirs:
       - "{snap_common}/etc/nova.conf.d"
     log-file: "{snap_common}/log/nova-api-os-compute.log"
-  nova-api-metadata:
-    binary: nova-api-metadata
-    config-files:
-      - "{snap}/etc/nova/nova.conf"
-      - "{snap_common}/etc/nova/nova.conf"
-    config-dirs:
-      - "{snap_common}/etc/nova.conf.d"
-    log-file: "{snap_common}/log/nova-api-metadata.log"
   nova-conductor:
     binary: nova-conductor
     config-files:

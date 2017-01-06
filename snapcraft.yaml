@@ -24,13 +24,6 @@ apps:
     plugs:
       - network
       - network-bind
-  metadata:
-    command: snap-openstack nova-api-metadata
-    daemon: simple
-    plugs:
-      - network
-      - network-bind
-      - firewall-control
   conductor:
     command: snap-openstack nova-conductor
     daemon: simple
@@ -53,6 +46,8 @@ apps:
     command: snap-openstack nova-manage
     plugs:
       - network
+    aliases:
+      - nova-manage
 parts:
   nova:
     plugin: python
