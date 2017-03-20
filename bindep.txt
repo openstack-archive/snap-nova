@@ -1,1 +1,2 @@
 snapcraft [platform:dpkg]
+snapd [platform:dpkg]

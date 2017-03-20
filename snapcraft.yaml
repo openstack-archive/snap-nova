@@ -14,38 +14,27 @@ description: |
   .
   This snap provides the Nova controller component of an OpenStack
   deployment.
-confinement: strict
+confinement: classic
 grade: devel
+
+environment:
+  PATH: $PATH:$SNAP/bin/
 
 apps:
   api:
     command: snap-openstack nova-api-os-compute
     daemon: simple
-    plugs:
-      - network
-      - network-bind
   conductor:
     command: snap-openstack nova-conductor
     daemon: simple
-    plugs:
-      - network
-      - network-bind
   scheduler:
     command: snap-openstack nova-scheduler
     daemon: simple
-    plugs:
-      - network
-      - network-bind
   consoleauth:
     command: snap-openstack nova-consoleauth
     daemon: simple
-    plugs:
-      - network
-      - network-bind
   manage:
     command: snap-openstack nova-manage
-    plugs:
-      - network
     aliases:
       - nova-manage
 parts:
@@ -56,23 +45,18 @@ parts:
     python-packages:
       - pymysql
       - python-memcached
-      - git+https://github.com/openstack-snaps/snap.openstack#egg=snap.openstack
+      - git+https://github.com/openstack/snap.openstack#egg=snap.openstack
     constraints: https://raw.githubusercontent.com/openstack/requirements/master/upper-constraints.txt
     build-packages:
+      - gcc
       - libffi-dev
       - libssl-dev
-      - libxml2-dev
-      - libxslt1-dev
-      - pkg-config
-      - gcc
   templates:
-    after:
-      - nova
+    after: [nova]
     plugin: dump
     source: snap
   config:
-    after:
-      - nova
+    after: [nova]
     plugin: dump
     source: http://tarballs.openstack.org/nova/nova-master.tar.gz
     filesets:
