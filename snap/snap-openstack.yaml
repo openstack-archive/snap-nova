@@ -1,49 +1,51 @@
 setup:
   dirs:
-    - "{snap_common}/etc/nova.conf.d"
-    - "{snap_common}/etc/nova"
-    - "{snap_common}/log"
-    - "{snap_common}/lock"
-    - "{snap_common}/run"
+    - "{snap_common}/etc/nova/conf.d"
+    - "{snap_common}/lib/nova"
+    - "{snap_common}/log/nova"
+    - "{snap_common}/lock/nova"
+    - "{snap_common}/run/nova"
+  symlinks:
+    "{snap_common}/etc/nova": /etc/nova
+    "{snap_common}/lib/nova": /var/lib/nova
+    "{snap_common}/log/nova": /var/log/nova
+    "{snap_common}/lock/nova": /var/lock/nova
   templates:
-    "nova-snap.conf.j2": "{snap_common}/etc/nova.conf.d/nova-snap.conf"
+    nova-snap.conf.j2: "{snap_common}/etc/nova/conf.d/nova-snap.conf"
+  copyfiles:
+    "{snap}/etc/nova": "{snap_common}/etc/nova"
 entry_points:
   nova-api-os-compute:
     binary: nova-api-os-compute
     config-files:
-      - "{snap}/etc/nova/nova.conf"
-      - "{snap_common}/etc/nova/nova.conf"
+      - "/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova.conf.d"
-    log-file: "{snap_common}/log/nova-api-os-compute.log"
+      - "/etc/nova/conf.d"
+    log-file: "/var/log/nova/nova-api-os-compute.log"
   nova-conductor:
     binary: nova-conductor
     config-files:
-      - "{snap}/etc/nova/nova.conf"
-      - "{snap_common}/etc/nova/nova.conf"
+      - "/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova.conf.d"
-    log-file: "{snap_common}/log/nova-conductor.log"
+      - "/etc/nova/conf.d"
+    log-file: "/var/log/nova/nova-conductor.log"
   nova-scheduler:
     binary: nova-scheduler
     config-files:
-      - "{snap}/etc/nova/nova.conf"
-      - "{snap_common}/etc/nova/nova.conf"
+      - "/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova.conf.d"
-    log-file: "{snap_common}/log/nova-scheduler.log"
+      - "/etc/nova/conf.d"
+    log-file: "/var/log/nova/nova-scheduler.log"
   nova-consoleauth:
     binary: nova-consoleauth
     config-files:
-      - "{snap}/etc/nova/nova.conf"
-      - "{snap_common}/etc/nova/nova.conf"
+      - "/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova.conf.d"
-    log-file: "{snap_common}/log/nova-consoleauth.log"
+      - "/etc/nova/conf.d"
+    log-file: "/var/log/nova/nova-consoleauth.log"
   nova-manage:
     binary: nova-manage
     config-files:
-      - "{snap}/etc/nova/nova.conf"
-      - "{snap_common}/etc/nova/nova.conf"
+      - "/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova.conf.d"
+      - "/etc/nova/conf.d"
