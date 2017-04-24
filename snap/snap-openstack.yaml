@@ -17,6 +17,13 @@ entry_points:
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
     log-file: "{snap_common}/log/nova-api-os-compute.log"
+  nova-placement-api:
+    binary: "{snap}/bin/nova-placement-api"
+    config-files:
+      - "{snap_common}/etc/nova/nova.conf"
+    config-dirs:
+      - "{snap_common}/etc/nova/conf.d"
+    log-file: "{snap_common}/log/nova-placement-api.log"
   nova-conductor:
     binary: "{snap}/bin/nova-conductor"
     config-files:

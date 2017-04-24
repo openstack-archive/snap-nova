@@ -23,6 +23,11 @@ apps:
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
       $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-api-os-compute
     daemon: simple
+  placement:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-placement-api
+    daemon: simple
   conductor:
     command: >
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
