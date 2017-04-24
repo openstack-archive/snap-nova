@@ -1,0 +1,11 @@
+[uwsgi]
+wsgi-file = {{ snap }}/bin/nova-placement-api
+uwsgi-socket = {{ snap_common }}/run/admin.sock
+buffer-size = 65535
+master = true
+enable-threads = true
+processes = 4
+thunder-lock = true
+lazy-apps = true
+pyargv = --config-file={{ snap_common }}/etc/nova/nova.conf --config-dir={{ snap_common }}/etc/nova/conf.d --log-file={{ snap_common }}/log/nova-placement-api.log
+home = {{ snap }}/usr

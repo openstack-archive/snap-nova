@@ -1,14 +1,24 @@
 setup:
   dirs:
     - "{snap_common}/etc/nova/conf.d"
+    - "{snap_common}/etc/nginx"
+    - "{snap_common}/etc/uwsgi"
     - "{snap_common}/lib"
     - "{snap_common}/log"
     - "{snap_common}/lock"
     - "{snap_common}/run"
+    # NOTE(coreycb): Drop /var/*/nginx dirs once nginx is compiled from source.
+    # nginx hardcodes paths at compile time without override capability.
+    - "/var/lib/nginx"
+    - "/var/log/nginx"
   templates:
     nova-snap.conf.j2: "{snap_common}/etc/nova/conf.d/nova-snap.conf"
+    nova-placement-api.ini.j2: "{snap_common}/etc/uwsgi/nova-placement-api.ini"
+    nova-nginx.conf.j2: "{snap_common}/etc/nginx/sites-enabled/nova.conf"
+    nginx.conf.j2: "{snap_common}/etc/nginx/nginx.conf"
   copyfiles:
     "{snap}/etc/nova": "{snap_common}/etc/nova"
+    "{snap}/etc/nginx": "{snap_common}/etc/nginx"
 entry_points:
   nova-api-os-compute:
     binary: "{snap}/bin/nova-api-os-compute"
@@ -17,6 +27,13 @@ entry_points:
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
     log-file: "{snap_common}/log/nova-api-os-compute.log"
+  nova-uwsgi:
+    type: uwsgi
+    uwsgi-dir: "{snap_common}/etc/uwsgi"
+    log-file: "{snap_common}/log/uwsgi.log"
+  nova-nginx:
+    type: nginx
+    config-file: "{snap_common}/etc/nginx/nginx.conf"
   nova-conductor:
     binary: "{snap}/bin/nova-conductor"
     config-files:

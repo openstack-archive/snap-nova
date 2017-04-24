@@ -23,6 +23,17 @@ apps:
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
       $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-api-os-compute
     daemon: simple
+  uwsgi:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-uwsgi
+    daemon: simple
+  nginx:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      LD_LIBRARY_PATH=$SNAP/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-nginx
+    daemon: forking
   conductor:
     command: >
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
@@ -59,6 +70,7 @@ parts:
       - gcc
       - libffi-dev
       - libssl-dev
+    stage-packages: [nginx]
     stage:
       - -usr/bin/2to3
       - -usr/bin/pydoc
