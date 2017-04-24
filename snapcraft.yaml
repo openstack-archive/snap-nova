@@ -23,6 +23,18 @@ apps:
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
       $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-api-os-compute
     daemon: simple
+  uwsgi:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      OS_PLACEMENT_CONFIG_DIR=$SNAP_COMMON/etc/nova
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-uwsgi
+    daemon: simple
+  nginx:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      LD_LIBRARY_PATH=$SNAP/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-nginx
+    daemon: forking
   conductor:
     command: >
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
@@ -52,6 +64,7 @@ parts:
     source: http://tarballs.openstack.org/nova/nova-master.tar.gz
     python-packages:
       - pymysql
+      - uwsgi
       - python-memcached
       - git+https://github.com/openstack/snap.openstack#egg=snap.openstack
     constraints: https://raw.githubusercontent.com/openstack/requirements/master/upper-constraints.txt
@@ -59,6 +72,7 @@ parts:
       - gcc
       - libffi-dev
       - libssl-dev
+    stage-packages: [nginx]
     stage:
       - -usr/bin/2to3
       - -usr/bin/pydoc
