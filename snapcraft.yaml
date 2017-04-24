@@ -17,28 +17,36 @@ description: |
 confinement: classic
 grade: devel
 
-environment:
-  PATH: $PATH:$SNAP/bin/
-
 apps:
   api:
-    command: snap-openstack nova-api-os-compute
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-api-os-compute
     daemon: simple
   conductor:
-    command: snap-openstack nova-conductor
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-conductor
     daemon: simple
   scheduler:
-    command: snap-openstack nova-scheduler
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-scheduler
     daemon: simple
   consoleauth:
-    command: snap-openstack nova-consoleauth
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-consoleauth
     daemon: simple
   manage:
-    command: snap-openstack nova-manage
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-manage
     aliases:
       - nova-manage
 parts:
   nova:
+    after: [python]
     plugin: python
     python-version: python2
     source: http://tarballs.openstack.org/nova/nova-master.tar.gz
@@ -51,6 +59,11 @@ parts:
       - gcc
       - libffi-dev
       - libssl-dev
+    stage:
+      - -usr/bin/2to3
+      - -usr/bin/pydoc
+      - -usr/bin/python2.7
+      - -usr/lib/python2.7
     install:
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/paste/__init__.py
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/repoze/__init__.py
@@ -70,3 +83,16 @@ parts:
         - etc/nova/rootwrap.d
     stage: [$etc]
     snap: [$etc]
+  python:
+    source: https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz
+    plugin: autotools
+    configflags:
+      - --prefix=/usr
+      - --enable-shared
+      - --enable-unicode=ucs4
+    build-packages:
+      - libssl-dev
+    prime:
+      - -usr/include
+    install:
+      $SNAPCRAFT_PART_INSTALL/usr/bin/python2 -m ensurepip
