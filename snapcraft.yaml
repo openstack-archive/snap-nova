@@ -59,6 +59,8 @@ parts:
       - gcc
       - libffi-dev
       - libssl-dev
+      - libxml2-dev
+      - libxslt1-dev
     stage:
       - -usr/bin/2to3
       - -usr/bin/pydoc
