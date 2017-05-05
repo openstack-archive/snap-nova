@@ -17,12 +17,12 @@ setup:
     nova-nginx.conf.j2: "{snap_common}/etc/nginx/sites-enabled/nova.conf"
     nginx.conf.j2: "{snap_common}/etc/nginx/nginx.conf"
   copyfiles:
-    "{snap}/etc/nova": "{snap_common}/etc/nova"
     "{snap}/etc/nginx": "{snap_common}/etc/nginx"
 entry_points:
   nova-api-os-compute:
     binary: "{snap}/bin/nova-api-os-compute"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -37,6 +37,7 @@ entry_points:
   nova-conductor:
     binary: "{snap}/bin/nova-conductor"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -44,6 +45,7 @@ entry_points:
   nova-scheduler:
     binary: "{snap}/bin/nova-scheduler"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -51,6 +53,7 @@ entry_points:
   nova-consoleauth:
     binary: "{snap}/bin/nova-consoleauth"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -58,6 +61,7 @@ entry_points:
   nova-manage:
     binary: "{snap}/bin/nova-manage"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
