@@ -7,5 +7,5 @@ enable-threads = true
 processes = 4
 thunder-lock = true
 lazy-apps = true
-pyargv = --config-file={{ snap_common }}/etc/nova/nova.conf --config-dir={{ snap_common }}/etc/nova/conf.d --log-file={{ snap_common }}/log/nova-placement-api.log
 home = {{ snap }}/usr
+pyargv = {{ pyargv }}

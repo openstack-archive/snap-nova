@@ -14,11 +14,9 @@ setup:
     - "{snap_common}/run"
   templates:
     nova-snap.conf.j2: "{snap_common}/etc/nova/conf.d/nova-snap.conf"
-    nova-placement-api.ini.j2: "{snap_common}/etc/uwsgi/nova-placement-api.ini"
     nova-nginx.conf.j2: "{snap_common}/etc/nginx/sites-enabled/nova.conf"
     nginx.conf.j2: "{snap_common}/etc/nginx/nginx.conf"
   copyfiles:
-    "{snap}/etc/nova": "{snap_common}/etc/nova"
     "{snap}/usr/conf": "{snap_common}/etc/nginx"
   rchown:
     "{snap_common}/lib": "snap-nova:snap-nova"
@@ -29,6 +27,7 @@ entry_points:
   nova-api-os-compute:
     binary: "{snap}/bin/nova-api-os-compute"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -38,7 +37,15 @@ entry_points:
   nova-uwsgi:
     type: uwsgi
     uwsgi-dir: "{snap_common}/etc/uwsgi"
-    log-file: "{snap_common}/log/uwsgi.log"
+    uwsgi-log: "{snap_common}/log/uwsgi.log"
+    config-files:
+      - "{snap}/etc/nova/nova.conf"
+      - "{snap_common}/etc/nova/nova.conf"
+    config-dirs:
+      - "{snap_common}/etc/nova/conf.d"
+    log-file: "{snap_common}/log/nova-placement-api.log"
+    templates:
+      nova-placement-api.ini.j2: "{snap_common}/etc/uwsgi/nova-placement-api.ini"
     run-as:
       snap-nova: [snap-nova]
   nova-nginx:
@@ -47,6 +54,7 @@ entry_points:
   nova-conductor:
     binary: "{snap}/bin/nova-conductor"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -56,6 +64,7 @@ entry_points:
   nova-scheduler:
     binary: "{snap}/bin/nova-scheduler"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -65,6 +74,7 @@ entry_points:
   nova-consoleauth:
     binary: "{snap}/bin/nova-consoleauth"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -74,6 +84,7 @@ entry_points:
   nova-manage:
     binary: "{snap}/bin/nova-manage"
     config-files:
+      - "{snap}/etc/nova/nova.conf"
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
