@@ -97,7 +97,7 @@ parts:
         - etc/nova/*.json
         - etc/nova/rootwrap.d
     stage: [$etc]
-    snap: [$etc]
+    prime: [$etc]
   nginx:
     source: http://www.nginx.org/download/nginx-1.13.0.tar.gz
     plugin: autotools
