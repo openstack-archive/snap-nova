@@ -1,14 +1,12 @@
 user root;
 worker_processes auto;
 pid {{ snap_common }}/run/nginx.pid;
-include {{ snap_common }}/etc/nginx/modules-enabled/*.conf;
 
 events {
         worker_connections 768;
 }
 
 http {
-
         ##
         # Basic Settings
         ##
@@ -21,13 +19,6 @@ http {
 
         include {{ snap_common }}/etc/nginx/mime.types;
         default_type application/octet-stream;
-
-        ##
-        # SSL Settings
-        ##
-
-        ssl_protocols TLSv1.1 TLSv1.2;
-        ssl_prefer_server_ciphers on;
 
         ##
         # Logging Settings
