@@ -74,7 +74,6 @@ parts:
       - libssl-dev
       - libxml2-dev
       - libxslt1-dev
-    stage-packages: [nginx]
     stage:
       - -usr/bin/2to3
       - -usr/bin/pydoc
@@ -99,6 +98,17 @@ parts:
         - etc/nova/rootwrap.d
     stage: [$etc]
     snap: [$etc]
+  nginx:
+    source: http://www.nginx.org/download/nginx-1.13.0.tar.gz
+    plugin: autotools
+    configflags:
+      - --prefix=/usr
+      - --http-log-path=/var/snap/nova/common/log/nginx-access.log
+      - --error-log-path=/var/snap/nova/common/log/nginx-error.log
+      - --lock-path=/var/snap/nova/common/lock/nginx.lock
+      - --pid-path=/var/snap/nova/common/run/nginx.pid
+    build-packages:
+      - libpcre3-dev
   python:
     source: https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz
     plugin: autotools
