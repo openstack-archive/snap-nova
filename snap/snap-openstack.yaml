@@ -45,7 +45,7 @@ entry_points:
       - "{snap_common}/etc/nova/conf.d"
     log-file: "{snap_common}/log/nova-placement-api.log"
     templates:
-      nova-placement-api.ini.j2: "{snap_common}/etc/uwsgi/nova-placement-api.ini"
+      nova-placement-api-snap.ini.j2: "{snap_common}/etc/uwsgi/nova-placement-api-snap.ini"
     run-as:
       snap-nova: [snap-nova]
   nova-nginx:
