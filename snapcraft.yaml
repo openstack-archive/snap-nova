@@ -66,7 +66,7 @@ parts:
       - pymysql
       - uwsgi
       - python-memcached
-      - git+https://github.com/openstack/snap.openstack#egg=snap.openstack
+      - git+https://github.com/coreycb/snap.openstack#egg=snap.openstack
     constraints: https://raw.githubusercontent.com/openstack/requirements/stable/ocata/upper-constraints.txt
     build-packages:
       - gcc
