@@ -7,17 +7,19 @@ setup:
     - "{snap_common}/etc/nova"
     - "{snap_common}/etc/nova/conf.d"
     - "{snap_common}/etc/nginx"
+    - "{snap_common}/etc/nginx/sites-enabled"
+    - "{snap_common}/etc/nginx/snap"
+    - "{snap_common}/etc/nginx/snap/sites-enabled"
     - "{snap_common}/etc/uwsgi"
+    - "{snap_common}/etc/uwsgi/snap"
     - "{snap_common}/lib"
     - "{snap_common}/lock"
     - "{snap_common}/log"
     - "{snap_common}/run"
   templates:
     nova-snap.conf.j2: "{snap_common}/etc/nova/conf.d/nova-snap.conf"
-    nova-nginx.conf.j2: "{snap_common}/etc/nginx/sites-enabled/nova.conf"
-    nginx.conf.j2: "{snap_common}/etc/nginx/nginx.conf"
-  copyfiles:
-    "{snap}/usr/conf": "{snap_common}/etc/nginx"
+    nova-nginx.conf.j2: "{snap_common}/etc/nginx/snap/sites-enabled/nova.conf"
+    nginx.conf.j2: "{snap_common}/etc/nginx/snap/nginx.conf"
   rchown:
     "{snap_common}/lib": "snap-nova:snap-nova"
     "{snap_common}/lock": "snap-nova:snap-nova"
@@ -28,6 +30,7 @@ entry_points:
     binary: "{snap}/bin/nova-api-os-compute"
     config-files:
       - "{snap}/etc/nova/nova.conf"
+    config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -36,25 +39,30 @@ entry_points:
       snap-nova: [snap-nova]
   nova-uwsgi:
     type: uwsgi
-    uwsgi-dir: "{snap_common}/etc/uwsgi"
+    uwsgi-dir: "{snap_common}/etc/uwsgi/snap"
+    uwsgi-dir-override: "{snap_common}/etc/uwsgi"
     uwsgi-log: "{snap_common}/log/uwsgi.log"
     config-files:
       - "{snap}/etc/nova/nova.conf"
+    config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
     log-file: "{snap_common}/log/nova-placement-api.log"
     templates:
-      nova-placement-api.ini.j2: "{snap_common}/etc/uwsgi/nova-placement-api.ini"
+      nova-placement-api.ini.j2:
+        "{snap_common}/etc/uwsgi/snap/nova-placement-api.ini"
     run-as:
       snap-nova: [snap-nova]
   nova-nginx:
     type: nginx
-    config-file: "{snap_common}/etc/nginx/nginx.conf"
+    config-file: "{snap_common}/etc/nginx/snap/nginx.conf"
+    config-file-override: "{snap_common}/etc/nginx/nginx.conf"
   nova-conductor:
     binary: "{snap}/bin/nova-conductor"
     config-files:
       - "{snap}/etc/nova/nova.conf"
+    config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -65,6 +73,7 @@ entry_points:
     binary: "{snap}/bin/nova-scheduler"
     config-files:
       - "{snap}/etc/nova/nova.conf"
+    config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -75,6 +84,7 @@ entry_points:
     binary: "{snap}/bin/nova-consoleauth"
     config-files:
       - "{snap}/etc/nova/nova.conf"
+    config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
@@ -85,6 +95,7 @@ entry_points:
     binary: "{snap}/bin/nova-manage"
     config-files:
       - "{snap}/etc/nova/nova.conf"
+    config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
       - "{snap_common}/etc/nova/conf.d"
