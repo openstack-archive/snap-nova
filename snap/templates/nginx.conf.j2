@@ -35,5 +35,5 @@ http {
         gzip_disable "msie6";
 
         include {{ snap_common }}/etc/nginx/conf.d/*.conf;
-        include {{ snap_common }}/etc/nginx/sites-enabled/*;
+        include {{ snap_common }}/etc/nginx/snap/sites-enabled/*;
 }
