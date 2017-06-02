@@ -10,68 +10,121 @@ snap based OpenStack deployment.
 
 The nova snap can be installed directly from the snap store:
 
-    sudo snap install [--edge] nova
+    sudo snap install --edge --classic nova
 
-## Configuring Nova
+The nova snap is working towards publication across tracks for
+OpenStack releases. The edge channel for each track will contain the tip
+of the OpenStack project's master branch, with the beta, candidate and
+release channels being reserved for released versions. These three channels
+will be used to drive the CI process for validation of snap updates. This
+should result in an experience such as:
 
-Snaps run in an AppArmor and seccomp confined profile, so don't read
-configuration from `/etc/nova` on the hosting operating system install.
+    sudo snap install --classic --channel=ocata/stable nova
+    sudo snap install --classic --channel=pike/edge nova
 
-This snap supports configuration via the $SNAP\_COMMON writable area for the
-snap:
+## Configuring nova
 
-    etc
+The nova snap gets its default configuration from the following $SNAP
+and $SNAP_COMMON locations:
+
+    /snap/nova/current/etc/
+    └── nova
+        ├── nova.conf
+        └── ...
+
+    /var/snap/nova/common/etc/
     ├── nova
-    │   ├── nova.conf
-    └── nova.conf.d
-        ├── database.conf
-        ├── nova-snap.conf
-        └── keystone.conf
+    │   └── conf.d
+    │       └── nova-snap.conf
+    ├── nginx
+    │   ├── snap
+    │   │   ├── nginx.conf
+    │   │   └── sites-enabled
+    │   │       └── nova.conf
+    └── uwsgi
+        └── snap
+            └── nova-placement-api.ini
 
-The nova snap can be configured in a few ways.
+The nova snap supports configuration updates via its $SNAP_COMMON writable
+area. The default nova configuration can be overridden as follows:
 
-Firstly the nova-server daemon will detect and read `etc/nova/nova.conf`
-if it exists so you can reuse your existing tooling to write to this file
-for classic style configuration.
+    /var/snap/nova/common/etc/
+    ├── nova
+    │   ├── conf.d
+    │   │   ├── nova-snap.conf
+    │   │   ├── database.conf
+    │   │   └── rabbitmq.conf
+    │   └── nova.conf
+    ├── nginx
+    │   ├── snap
+    │   │   ├── nginx.conf
+    │   │   └── sites-enabled
+    │   │       └── nova.conf
+    │   ├── nginx.conf
+    │   ├── sites-enabled
+    │   │   └── nova.conf
+    └── uwsgi
+        ├── snap
+        │   └── nova-placement-api.ini
+        └── nova-placement-api.ini
 
-Alternatively the nova  daemons will load all configuration files from
-`etc/nova.conf.d` - in the above example, database and keystone authtoken
-are configured  using configuration snippets in separate files in
-`etc/nova.conf.d`.
+The nova configuration can be overridden or augmented by writing
+configuration snippets to files in the conf.d directory.
 
-For reference, $SNAP\_COMMON is typically located under
-`/var/snap/nova/common`.
+Alternatively, nova configuration can be overridden by adding a full nova.conf
+file to the nova/ directory. If overriding in this way, you'll need to update
+your config to point at additional config files located in $SNAP, or add those
+to $SNAP_COMMON as well.
 
-## Managing Nova
+The nova nginx configuration can be overridden by adding an nginx/nginx.conf
+and new site config files to the nginx/sites-enabled directory. In this case the
+nginx/nginx.conf file would include that sites-enabled directory. If
+nginx/nginx.conf exists, nginx/snap/nginx.conf will no longer be used.
 
-Currently all snap binaries must be run as root; for example, to run the
-nova-manage binary use:
+The nova uwsgi configuration can be overridden similarly by adding a
+uwsgi/nova-placement-api.ini file. If uwsgi/nova.ini exists,
+uwsgi/snap/nova-placement-api.ini will no longer be used.
 
-    sudo nova.manage
+## Logging nova
 
-## Restarting Nova services
+The services for the nova snap will log to its $SNAP_COMMON writable area:
+/var/snap/nova/common/log.
+
+## Managing nova
+
+The nova snap will drop privileges to run daemons and commands under
+a regular user named snap-nova. Additionally, permissions and ownership
+of files and directories in /var/snap/nova/common/ are modified to
+restrict access from other users.
+
+The nova snap has alias support that enables use of the well-known
+nova-manage command. To enable the alias, run the following prior to
+using the command:
+
+    sudo snap alias nova.manage nova-manage
+
+## Restarting nova services
 
 To restart all nova services:
 
     sudo systemctl restart snap.nova.*
 
-or restart services individually:
+or an individual service can be restarted by dropping the wildcard and
+specifying the full service name.
 
-    sudo systemctl restart snap.nova.api
-
-## Building the Nova snap
+## Building the nova snap
 
 Simply clone this repository and then install and run snapcraft:
 
-    git clone https://github.com/openstack-snaps/snap-nova
+    git clone https://github.com/openstack/snap-nova
     sudo apt install snapcraft
-    cd nova
+    cd snap-nova
     snapcraft
 
 ## Support
 
-Please report any bugs related to this snap on
+Please report any bugs related to this snap at:
 [Launchpad](https://bugs.launchpad.net/snap-nova/+filebug).
 
-Alternatively you can find the OpenStack Snap team in `#openstack-snaps`
-on Freenode IRC.
+Alternatively you can find the OpenStack Snap team in `#openstack-snaps` on
+Freenode IRC.
