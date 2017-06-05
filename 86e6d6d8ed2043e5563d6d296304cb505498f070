@@ -1,0 +1,10 @@
+Code-Review+1: Pete Vander Giessen <pete.vandergiessen@canonical.com>
+Code-Review+1: David Ames <david.ames@canonical.com>
+Code-Review+2: Corey Bryant <corey.bryant@canonical.com>
+Workflow+1: Corey Bryant <corey.bryant@canonical.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 05 Jun 2017 16:35:31 +0000
+Reviewed-on: https://review.openstack.org/466289
+Project: openstack/snap-nova
+Branch: refs/heads/master
