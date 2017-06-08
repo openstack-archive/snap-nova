@@ -26,7 +26,6 @@ apps:
   uwsgi:
     command: >
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      OS_PLACEMENT_CONFIG_DIR=$SNAP_COMMON/etc/nova
       $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-uwsgi
     daemon: simple
   nginx:
@@ -58,7 +57,7 @@ apps:
       - nova-manage
 parts:
   nova:
-    after: [python]
+    after: [python, patches]
     plugin: python
     python-version: python2
     source: http://tarballs.openstack.org/nova/nova-stable-ocata.tar.gz
@@ -79,6 +78,9 @@ parts:
       - -usr/bin/pydoc
       - -usr/bin/python2.7
       - -usr/lib/python2.7
+    prepare: |
+      export PATCH_DIR="../../patches/src"
+      patch -p4 < $PATCH_DIR/placement-api-config.patch
     install:
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/paste/__init__.py
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/repoze/__init__.py
@@ -86,6 +88,9 @@ parts:
     after: [nova]
     plugin: dump
     source: snap
+  patches:
+    plugin: dump
+    source: patches
   config:
     after: [nova]
     plugin: dump
