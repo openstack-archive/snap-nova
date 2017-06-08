@@ -1,0 +1,30 @@
+Description: This enables execution of nova-placement-api if nova.conf
+             doesn't exist in the typical location of /etc/nova/nova.conf
+             and OS_PLACEMENT_CONFIG_DIR is not set. In our case we have
+             two possible paths we may pick nova.conf up from, based on
+             what --config-file specifies. The --config-file and --config-dir
+             CLI options get parsed in oslo.config (in the __call__() method
+             of the ConfigOpts class).
+Author: Corey Bryant <corey.bryant@ubuntu.com>
+Origin: https://review.openstack.org/#/c/472378/
+Forwarded: yes
+
+--- a/parts/nova/install/lib/python2.7/site-packages/nova/api/openstack/placement/wsgi.py
++++ b/parts/nova/install/lib/python2.7/site-packages/nova/api/openstack/placement/wsgi.py
+@@ -17,6 +17,7 @@
+ import logging as py_logging
+ import os
+ import os.path
++import sys
+ 
+ from nova.api.openstack.placement import deploy
+ from nova import conf
+@@ -50,7 +51,7 @@
+ def init_application():
+     # initialize the config system
+     conffile = _get_config_file()
+-    config.parse_args([], default_config_files=[conffile])
++    config.parse_args(sys.argv, default_config_files=[conffile])
+ 
+     # initialize the logging system
+     setup_logging(conf.CONF)
