@@ -35,7 +35,7 @@ and $SNAP_COMMON locations:
 
     /var/snap/nova/common/etc/
     ├── nova
-    │   └── conf.d
+    │   └── nova.conf.d
     │       └── nova-snap.conf
     ├── nginx
     │   ├── snap
@@ -51,7 +51,7 @@ area. The default nova configuration can be overridden as follows:
 
     /var/snap/nova/common/etc/
     ├── nova
-    │   ├── conf.d
+    │   ├── nova.conf.d
     │   │   ├── nova-snap.conf
     │   │   ├── database.conf
     │   │   └── rabbitmq.conf
@@ -70,7 +70,7 @@ area. The default nova configuration can be overridden as follows:
         └── nova-placement-api.ini
 
 The nova configuration can be overridden or augmented by writing
-configuration snippets to files in the conf.d directory.
+configuration snippets to files in the nova.conf.d directory.
 
 Alternatively, nova configuration can be overridden by adding a full nova.conf
 file to the nova/ directory. If overriding in this way, you'll need to update

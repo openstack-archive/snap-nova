@@ -5,7 +5,7 @@ setup:
   dirs:
     - "{snap_common}/etc"
     - "{snap_common}/etc/nova"
-    - "{snap_common}/etc/nova/conf.d"
+    - "{snap_common}/etc/nova/nova.conf.d"
     - "{snap_common}/etc/nginx"
     - "{snap_common}/etc/nginx/sites-enabled"
     - "{snap_common}/etc/nginx/snap"
@@ -17,7 +17,7 @@ setup:
     - "{snap_common}/log"
     - "{snap_common}/run"
   templates:
-    nova-snap.conf.j2: "{snap_common}/etc/nova/conf.d/nova-snap.conf"
+    nova-snap.conf.j2: "{snap_common}/etc/nova/nova.conf.d/nova-snap.conf"
     nova-nginx.conf.j2: "{snap_common}/etc/nginx/snap/sites-enabled/nova.conf"
     nginx.conf.j2: "{snap_common}/etc/nginx/snap/nginx.conf"
   rchown:
@@ -33,7 +33,7 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova/conf.d"
+      - "{snap_common}/etc/nova/nova.conf.d"
     log-file: "{snap_common}/log/nova-api-os-compute.log"
     run-as:
       snap-nova: [snap-nova]
@@ -47,7 +47,7 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova/conf.d"
+      - "{snap_common}/etc/nova/nova.conf.d"
     log-file: "{snap_common}/log/nova-placement-api.log"
     templates:
       nova-placement-api.ini.j2:
@@ -65,7 +65,7 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova/conf.d"
+      - "{snap_common}/etc/nova/nova.conf.d"
     log-file: "{snap_common}/log/nova-conductor.log"
     run-as:
       snap-nova: [snap-nova]
@@ -76,7 +76,7 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova/conf.d"
+      - "{snap_common}/etc/nova/nova.conf.d"
     log-file: "{snap_common}/log/nova-scheduler.log"
     run-as:
       snap-nova: [snap-nova]
@@ -87,7 +87,7 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova/conf.d"
+      - "{snap_common}/etc/nova/nova.conf.d"
     log-file: "{snap_common}/log/nova-consoleauth.log"
     run-as:
       snap-nova: [snap-nova]
@@ -98,6 +98,6 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/nova/nova.conf"
     config-dirs:
-      - "{snap_common}/etc/nova/conf.d"
+      - "{snap_common}/etc/nova/nova.conf.d"
     run-as:
       snap-nova: [snap-nova]
