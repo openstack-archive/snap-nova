@@ -26,9 +26,10 @@ apps:
   uwsgi:
     command: >
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      OS_PLACEMENT_CONFIG_DIR=$SNAP_COMMON/etc/nova
       $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-uwsgi
     daemon: simple
+    environment:
+      OS_PLACEMENT_CONFIG_DIR: $SNAP/etc/nova/
   nginx:
     command: >
       env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
