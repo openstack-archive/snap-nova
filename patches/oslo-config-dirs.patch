@@ -1,0 +1,49 @@
+Description: Add snap package paths to default config dirs
+  With snap packaging (see snapcraft.io) the package is installed into a
+  read-only squashfs filesystem, which includes the default config. For
+  example, $SNAP/etc/nova/nova.conf. To override the defaults, a separate
+  writable directory is used, and this directory is also unique to the snap.
+  For example, either $SNAP_COMMON/etc/nova/nova.conf, or
+  $SNAP_COMMON/etc/nova/nova.conf.d/ can be used to override config.
+
+  This patch adds these snap directories to the default config paths where
+  oslo looks for config.
+
+  For more details on $SNAP and $SNAP_COMMON please refer to
+  https://snapcraft.io/docs/reference/env.
+Author: Corey Bryant <corey.bryant@canonical.com>
+Origin: https://review.openstack.org/#/c/474212/
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1696830
+
+--- a/parts/nova/install/lib/python2.7/site-packages/oslo_config/cfg.py
++++ b/parts/nova/install/lib/python2.7/site-packages/oslo_config/cfg.py
+@@ -614,16 +614,27 @@
+       /etc/${project}/
+       /etc/
+ 
+-    Otherwise, these directories::
++    If a project is specified and installed from a snap package, following
++    directories are also returned:
++
++      ${SNAP}/etc/${project}
++      ${SNAP_COMMON}/etc/${project}
++
++    Otherwise, if project is not specified, these directories are returned:
+ 
+       ~/
+       /etc/
+     """
++    snap = os.environ.get('SNAP')
++    snap_c = os.environ.get('SNAP_COMMON')
++
+     cfg_dirs = [
+         _fixpath(os.path.join('~', '.' + project)) if project else None,
+         _fixpath('~'),
+         os.path.join('/etc', project) if project else None,
+-        '/etc'
++        '/etc',
++        os.path.join(snap, "etc", project) if snap and project else None,
++        os.path.join(snap_c, "etc", project) if snap_c and project else None,
+     ]
+     return [x for x in cfg_dirs if x]
+ 
