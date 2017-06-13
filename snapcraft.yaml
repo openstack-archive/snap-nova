@@ -79,9 +79,12 @@ parts:
       - -usr/bin/pydoc
       - -usr/bin/python2.7
       - -usr/lib/python2.7
-    install:
+    install: |
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/paste/__init__.py
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/repoze/__init__.py
+      export SNAP_ROOT="../../../"
+      export SNAP_SITE_PACKAGES="$SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages"
+      patch -d $SNAP_SITE_PACKAGES -p1 < $SNAP_ROOT/patches/oslo-config-dirs.patch
   templates:
     after: [nova]
     plugin: dump
