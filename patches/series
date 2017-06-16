@@ -1,2 +1,3 @@
 oslo-config-dirs.patch
 placement-api-config.patch
+drop-nginx-setgroups.patch
