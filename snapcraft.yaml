@@ -14,52 +14,51 @@ description: |
   .
   This snap provides the Nova controller component of an OpenStack
   deployment.
-confinement: classic
+confinement: strict
 grade: devel
 
 apps:
   api:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-api-os-compute
+    command: snap-openstack nova-api-os-compute
     daemon: simple
+    plugs:
+      - network-bind
   uwsgi:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-uwsgi
+    command: snap-openstack nova-uwsgi
     daemon: simple
     environment:
       OS_PLACEMENT_CONFIG_DIR: $SNAP/etc/nova/
+    plugs:
+      - network-bind
   nginx:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      LD_LIBRARY_PATH=$SNAP/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-nginx
+    command: snap-openstack nova-nginx
     daemon: forking
+    plugs:
+      - browser-support
+      - network-bind
   conductor:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-conductor
+    command: snap-openstack nova-conductor
     daemon: simple
+    plugs:
+      - network
   scheduler:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-scheduler
+    command: snap-openstack nova-scheduler
     daemon: simple
+    plugs:
+      - network
   consoleauth:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-consoleauth
+    command: snap-openstack nova-consoleauth
     daemon: simple
+    plugs:
+      - network
   manage:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack nova-manage
+    command: snap-openstack nova-manage
     aliases:
       - nova-manage
+    plugs:
+      - network
 parts:
   nova:
-    after: [python]
     plugin: python
     python-version: python2
     source: http://tarballs.openstack.org/nova/nova-stable-ocata.tar.gz
@@ -75,11 +74,6 @@ parts:
       - libssl-dev
       - libxml2-dev
       - libxslt1-dev
-    stage:
-      - -usr/bin/2to3
-      - -usr/bin/pydoc
-      - -usr/bin/python2.7
-      - -usr/lib/python2.7
     install: |
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/paste/__init__.py
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/repoze/__init__.py
@@ -111,19 +105,18 @@ parts:
       - --error-log-path=/var/snap/nova/common/log/nginx-error.log
       - --lock-path=/var/snap/nova/common/lock/nginx.lock
       - --pid-path=/var/snap/nova/common/run/nginx.pid
+      - --http-client-body-temp-path=/var/snap/nova/common/lib/nginx_client_body
+      - --http-proxy-temp-path=/var/snap/nova/common/lib/nginx_proxy
+      - --http-fastcgi-temp-path=/var/snap/nova/common/lib/nginx_fastcgi
+      - --http-uwsgi-temp-path=/var/snap/nova/common/lib/nginx_uwsgi
+      - --http-scgi-temp-path=/var/snap/nova/common/lib/nginx_scgi
     build-packages:
       - libpcre3-dev
       - libssl-dev
-  python:
-    source: https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz
+    prepare: |
+      export SNAP_ROOT="../../../"
+      export SNAP_SOURCE="$SNAP_ROOT/parts/nginx/build"
+      patch -d $SNAP_SOURCE -p1 < $SNAP_ROOT/patches/drop-nginx-setgroups.patch
+  libxml2:
+    source: http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz
     plugin: autotools
-    configflags:
-      - --prefix=/usr
-      - --enable-shared
-      - --enable-unicode=ucs4
-    build-packages:
-      - libssl-dev
-    prime:
-      - -usr/include
-    install:
-      $SNAPCRAFT_PART_INSTALL/usr/bin/python2 -m ensurepip
