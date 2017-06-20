@@ -1,1 +1,2 @@
 oslo-config-dirs.patch
+drop-nginx-setgroups.patch
