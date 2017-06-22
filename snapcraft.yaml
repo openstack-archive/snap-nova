@@ -34,7 +34,6 @@ apps:
     command: snap-openstack nova-nginx
     daemon: forking
     plugs:
-      - browser-support
       - network-bind
   conductor:
     command: snap-openstack nova-conductor
