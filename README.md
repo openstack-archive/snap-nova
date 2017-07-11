@@ -91,14 +91,6 @@ uwsgi/snap/nova-placement-api.ini will no longer be used.
 The services for the nova snap will log to its $SNAP_COMMON writable area:
 /var/snap/nova/common/log.
 
-## Managing nova
-
-The nova snap has alias support that enables use of the well-known
-nova-manage command. To enable the alias, run the following prior to
-using the command:
-
-    sudo snap alias nova.manage nova-manage
-
 ## Restarting nova services
 
 To restart all nova services:

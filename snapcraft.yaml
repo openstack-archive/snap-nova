@@ -52,8 +52,6 @@ apps:
       - network
   manage:
     command: snap-openstack nova-manage
-    aliases:
-      - nova-manage
     plugs:
       - network
 parts:
