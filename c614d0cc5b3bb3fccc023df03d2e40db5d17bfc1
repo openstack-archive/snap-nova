@@ -1,0 +1,8 @@
+Code-Review+2: Corey Bryant <corey.bryant@canonical.com>
+Workflow+1: Corey Bryant <corey.bryant@canonical.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 08 Aug 2017 18:31:55 +0000
+Reviewed-on: https://review.openstack.org/491813
+Project: openstack/snap-nova
+Branch: refs/heads/master
