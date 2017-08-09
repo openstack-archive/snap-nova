@@ -10,7 +10,7 @@ snap based OpenStack deployment.
 
 The nova snap can be installed directly from the snap store:
 
-    sudo snap install --edge nova
+    sudo snap install --channel=ocata/edge nova
 
 The nova snap is working towards publication across tracks for
 OpenStack releases. The edge channel for each track will contain the tip
