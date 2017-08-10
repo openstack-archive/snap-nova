@@ -3,3 +3,12 @@ prime
 stage
 *.snap
 .tox
+
+# Snapcraft
+.snapcraft
+__pycache__
+.cache
+
+# emacs
+*~
+\#*

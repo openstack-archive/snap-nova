@@ -4,6 +4,18 @@ set -ex
 
 source $BASE_DIR/admin-openrc
 
+sudo mysql -u root << EOF
+CREATE DATABASE IF NOT EXISTS nova;
+CREATE DATABASE IF NOT EXISTS nova_api;
+CREATE DATABASE IF NOT EXISTS nova_cell0;
+GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' \
+  IDENTIFIED BY 'nova';
+GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' \
+  IDENTIFIED BY 'nova';
+GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'localhost' \
+  IDENTIFIED BY 'nova';
+EOF
+
 openstack user show nova || {
     openstack user create --domain default --password nova nova
     openstack role add --project service --user nova admin
