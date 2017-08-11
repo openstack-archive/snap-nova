@@ -19,6 +19,14 @@ class SnapstackTest(unittest.TestCase):
             snap='nova',
             script_loc='./tests/',
             scripts=['nova.sh'],
+            files=[
+                'etc/snap-nova/nova/nova.conf.d/nova-placement.conf',
+                'etc/snap-nova/nova/nova.conf.d/scheduler.conf',
+                'etc/snap-nova/nova/nova.conf.d/database.conf',
+                'etc/snap-nova/nova/nova.conf.d/keystone.conf',
+                'etc/snap-nova/nova/nova.conf.d/rabbitmq.conf',
+                'etc/snap-nova/nova/nova.conf.d/neutron.conf',
+            ],
             snap_store=False)))
 
         # Execute the snapstack tests
