@@ -1,0 +1,8 @@
+Code-Review+2: Dmitrii Shcherbakov <dmitrii.shcherbakov@canonical.com>
+Workflow+1: Dmitrii Shcherbakov <dmitrii.shcherbakov@canonical.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 12 Sep 2017 11:49:54 +0000
+Reviewed-on: https://review.openstack.org/500743
+Project: openstack/snap-nova
+Branch: refs/heads/master
