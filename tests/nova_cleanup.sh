@@ -3,7 +3,7 @@
 set -x
 
 sudo mysql -u root << EOF
-DROP DATABASE nova;
-DROP DATABASE nova_api;
-DROP DATABASE nova_cell0;
+DROP DATABASE IF EXISTS nova;
+DROP DATABASE IF EXISTS nova_api;
+DROP DATABASE IF EXISTS nova_cell0;
 EOF
