@@ -1,0 +1,8 @@
+Code-Review+2: James Page <james.page@canonical.com>
+Workflow+1: James Page <james.page@canonical.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 26 Oct 2017 11:24:06 +0000
+Reviewed-on: https://review.openstack.org/515202
+Project: openstack/snap-nova
+Branch: refs/heads/master
