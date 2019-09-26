@@ -1,2 +1,0 @@
-# Requirements to build snap
-# NOTE empty for now until snapcraft installable from branch
